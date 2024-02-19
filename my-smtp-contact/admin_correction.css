@@ -1,0 +1,28 @@
+ /* >= GS 3.4 */
+ 
+.wrapper {
+	margin-left: auto;
+	margin-right: auto;
+	width: 960px;
+	text-align: left;
+	padding-top: 1px;
+}
+
+.leftsec, .rightsec { 
+	border: none; 
+	padding-left: 0; 
+	padding-top: 0;
+	margin:0;
+}
+
+.leftsec:hover, .rightsec:hover {
+	background: none;
+}
+
+span.leftsec { 
+	float: none;
+}
+
+button {
+	padding: 3px 7px;
+}

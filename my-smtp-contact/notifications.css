@@ -1,0 +1,49 @@
+/*Notifications*/
+.m_smtp_c_container, .m_smtp_c_panel, .m_smtp_c_container p, .m_smtp_c_panel p {
+	font: 15px/21px Helvetica, Arial, sans-serif!important;
+	font-weight: normal;
+}
+
+.m_smtp_c_modal {z-index:9999;display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.4)}
+.m_smtp_c_modal-content {margin:auto;background-color:#fff;position:relative;padding:0;outline:0;width:600px}
+@media (max-width:600px){.m_smtp_c_modal-content {margin:0 10px;width:auto!important}.m_smtp_c_modal{padding-top:30px}}
+@media (max-width:768px){.m_smtp_c_modal-content {width:500px} .m_smtp_c_modal{padding-top:50px}}
+@media (min-width:993px){.m_smtp_c_modal-content {width:900px}}
+.m_smtp_c_card-4 {box-shadow:0 4px 10px 0 rgba(0,0,0,0.2),0 4px 20px 0 rgba(0,0,0,0.19)}
+.m_smtp_c_container:after,.m_smtp_c_container:before,.m_smtp_c_panel:after,.m_smtp_c_panel:before {content:"";display:table;clear:both}
+.m_smtp_c_container, .m_smtp_c_panel {padding:0.01em 16px}
+.m_smtp_c_panel {margin-top:16px;margin-bottom:16px;padding-bottom:8px;}
+.m_smtp_c_button {white-space:normal}
+.m_smtp_c_button {border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}
+.m_smtp_c_button:hover {color:#000!important;background-color:#ccc!important}
+.m_smtp_c_button {-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+.m_smtp_c_button:disabled {cursor:not-allowed;opacity:0.3}
+.m_smtp_c_display-topright {position:absolute;right:0;top:0}
+.m_smtp_c_pale-red {color:#000!important;background-color:#ffdddd!important}
+.m_smtp_c_pale-green {color:#000!important;background-color:#ddffdd!important}
+.m_smtp_c_display-container {position:relative} 
+.m_smtp_c_display-container:hover {display:block}
+.m_smtp_c_display-container:hover span.m_smtp_c_display-hover {display:inline-block}
+.m_smtp_c_container .h6, .m_smtp_c_panel .h6 {text-align: left;font-size:24px;font-weight:400;margin:10px 0}
+#msgModal-spanClose, #msgPage-spanClose, .msgPage-spanClose {font-size:22px!important;font-weight: normal}
+
+/* <p> in my-smtp-contact.php */
+.m_smtp_c_field_error {
+	margin: 0;
+	padding: 10px;
+	padding-left: 0;
+	text-align: left;
+	color: #000;
+}
+/* <p> in my-smtp-contact.php */
+.m_smtp_c_field_success {
+	margin: 0;
+	padding: 10px;
+	padding-left: 0;
+	text-align: left;
+	color: #000;
+}
+/* <span> in my-smtp-contact.php */
+.m_smtp_c_name_error {
+	font-weight: bold;
+}
