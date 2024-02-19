@@ -2,7 +2,7 @@
 $m_smtp_c_alternative_fields="off";
 $m_smtp_c_qty_fields="20";
 $m_smtp_c_limit_file_size="1048576";
-$m_smtp_c_valid_file_format=array("jpeg","jpg","gif","png","txt","doc","zip");
+$m_smtp_c_valid_file_format=["jpeg", "jpg", "gif", "png", "txt", "doc", "zip"];
 $m_smtp_c_arr_fields_Name[0]="User name";$m_smtp_c_arr_tags_Name[0]="0";$m_smtp_c_arr_fields_Name_ok[0]="ok";$m_smtp_c_arr_fields_Required[0]="required";$m_smtp_c_arr_fields_Type[0]="text";$m_smtp_c_arr_fields_Maxlength[0]="50";$m_smtp_c_arr_fields_Code[0]="&lt;br&gt;
 &lt;input size=&quot;26&quot;&gt;";$m_smtp_c_arr_fields_Name[1]="Select a file 1 ";$m_smtp_c_arr_tags_Name[1]="1";$m_smtp_c_arr_fields_Name_ok[1]="ok";$m_smtp_c_arr_fields_Required[1]="---";$m_smtp_c_arr_fields_Type[1]="file";$m_smtp_c_arr_fields_Maxlength[1]="---";$m_smtp_c_arr_fields_Code[1]="&lt;input&gt;";$m_smtp_c_arr_fields_Name[2]="Who is this? (checkbox like radio)";$m_smtp_c_arr_tags_Name[2]="2";$m_smtp_c_arr_fields_Name_ok[2]="ok";$m_smtp_c_arr_fields_Required[2]="---";$m_smtp_c_arr_fields_Type[2]="checkbox";$m_smtp_c_arr_fields_Maxlength[2]="---";$m_smtp_c_arr_fields_Code[2]="&lt;input value=&quot;Men&quot;&gt;
 &lt;label&gt;Men&lt;/label&gt;

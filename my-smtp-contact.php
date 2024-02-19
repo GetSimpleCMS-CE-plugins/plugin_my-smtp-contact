@@ -71,14 +71,16 @@ register_style('m_smtp_c_notifications_style', $SITEURL.'plugins/'.$m_smtp_c_thi
 queue_style('m_smtp_c_notifications_style', GSFRONT);
 
 // Creates a menu option on the Admin/Theme sidebar
-add_action('plugins-sidebar', 'createSideMenu', array($m_smtp_c_thisfile, $m_smtp_c_plugin_name));
+add_action('plugins-sidebar', 'createSideMenu', [$m_smtp_c_thisfile, $m_smtp_c_plugin_name]);
 
 // activate filter
 add_filter('content', 'ShortCodeGetMSC');
 
 // Show options in plugin page
 function m_smtp_c_options() {
-	global $m_smtp_c_thisfile, $m_smtp_c_language;
+	$m_smtp_c_description = null;
+ $m_smtp_c_admin_donate = null;
+ global $m_smtp_c_thisfile, $m_smtp_c_language;
 	
 	// Load language
 	require(GSROOTPATH.'plugins/'.$m_smtp_c_thisfile.'/lang/'.$m_smtp_c_language.'.php');
@@ -101,7 +103,8 @@ function m_smtp_c_options() {
 
 //*** Get My SMTP Contact ***//
 function GetMSC($my_msc_dir = 'no-forms') {
-	global $m_smtp_c_thisfile, $my_smtp_c_msg_no_form, $SITEURL;
+	$m_smtp_c_language = null;
+ global $m_smtp_c_thisfile, $my_smtp_c_msg_no_form, $SITEURL;
 	
 	if (!file_exists(GSROOTPATH.'plugins/'.$m_smtp_c_thisfile.'/forms/'.$my_msc_dir)) { 
 		$return = '<p style="text-align: center;">'.$my_smtp_c_msg_no_form.'</p>';
@@ -116,35 +119,35 @@ function GetMSC($my_msc_dir = 'no-forms') {
 	require(GSROOTPATH.'plugins/'.$m_smtp_c_thisfile.'/lang/'.$m_smtp_c_language.'.php');
 	
 	if (!function_exists('m_smtp_c_StrToLower')) { function m_smtp_c_StrToLower($string) {
-	return function_exists('mb_strtolower') ? mb_strtolower($string, 'UTF-8') : strtolower($string);
+	return function_exists('mb_strtolower') ? mb_strtolower((string) $string, 'UTF-8') : strtolower((string) $string);
 	}}
 	
 	if (!function_exists('m_smtp_c_StrLen')) { function m_smtp_c_StrLen($string) {
-	return function_exists('mb_strlen') ? mb_strlen($string, 'UTF-8') : strlen(utf8_decode($string));
+	return function_exists('mb_strlen') ? mb_strlen((string) $string, 'UTF-8') : strlen(utf8_decode((string) $string));
 	}}
 	
 	if (!function_exists('m_smtp_c_SafeEmail')) { function m_smtp_c_SafeEmail($string) {
 	$string = (string) $string;
-	$string = str_replace(array('\n', '\r'), ' ', $string);
+	$string = str_replace(['\n', '\r'], ' ', $string);
 	$string = preg_replace('/\s+/', ' ', $string);
 	$string = trim($string);
 	return $string;
 	}}
 
 	if (!function_exists('m_smtp_c_GetFileFormat')) { function m_smtp_c_GetFileFormat($arr_names) {
-	$tmp_arr = explode('.', $arr_names);
+	$tmp_arr = explode('.', (string) $arr_names);
 	$file_format = m_smtp_c_StrToLower(end($tmp_arr));
-	return htmlspecialchars($file_format);	  
+	return htmlspecialchars((string) $file_format);	  
 	}}
 
 	if (!function_exists('m_smtp_c_Translit')) { function m_smtp_c_Translit($string) {
 	$string = (string) $string; // convert to string value
 	$string = strip_tags($string); // remove HTML tags
-	$string = str_replace(array('\n', '\r'), ' ', $string); // remove the carriage return
+	$string = str_replace(['\n', '\r'], ' ', $string); // remove the carriage return
 	$string = preg_replace('/\s+/', ' ', $string); // remove duplicate spaces
 	$string = trim($string); // remove spaces at the beginning and end of the line
 	$string = m_smtp_c_StrToLower($string); // translate the string to lowercase (sometimes you need to set the locale)
-	$string = strtr($string, array('а'=>'a','б'=>'b','в'=>'v','г'=>'g','д'=>'d','е'=>'e','ё'=>'e','ж'=>'j','з'=>'z','и'=>'i','й'=>'y','к'=>'k','л'=>'l','м'=>'m','н'=>'n','о'=>'o','п'=>'p','р'=>'r','с'=>'s','т'=>'t','у'=>'u','ф'=>'f','х'=>'h','ц'=>'c','ч'=>'ch','ш'=>'sh','щ'=>'shch','ы'=>'y','э'=>'e','ю'=>'yu','я'=>'ya','ъ'=>'','ь'=>''));
+	$string = strtr($string, ['а'=>'a', 'б'=>'b', 'в'=>'v', 'г'=>'g', 'д'=>'d', 'е'=>'e', 'ё'=>'e', 'ж'=>'j', 'з'=>'z', 'и'=>'i', 'й'=>'y', 'к'=>'k', 'л'=>'l', 'м'=>'m', 'н'=>'n', 'о'=>'o', 'п'=>'p', 'р'=>'r', 'с'=>'s', 'т'=>'t', 'у'=>'u', 'ф'=>'f', 'х'=>'h', 'ц'=>'c', 'ч'=>'ch', 'ш'=>'sh', 'щ'=>'shch', 'ы'=>'y', 'э'=>'e', 'ю'=>'yu', 'я'=>'ya', 'ъ'=>'', 'ь'=>'']);
 	$string = preg_replace('/[^0-9a-z-_ \.]/i', '', $string); // clear the string of invalid characters
 	$count = substr_count($string, '.');
 	$string = preg_replace('/\./', '', $string, --$count); // remove all points except the last one
@@ -200,8 +203,8 @@ $return .= '
       return false;
       }
 		
-	  var arr_fields_Name = '.json_encode($m_smtp_c_arr_fields_Name).';
-	  var valid_file_format = '.json_encode($m_smtp_c_valid_file_format).';
+	  var arr_fields_Name = '.json_encode($m_smtp_c_arr_fields_Name, JSON_THROW_ON_ERROR).';
+	  var valid_file_format = '.json_encode($m_smtp_c_valid_file_format, JSON_THROW_ON_ERROR).';
 	  var fields_Name_err_size = "", fields_Name_err_format = "";
 	  var ext = "";
 	  var error = 0, error_msg = "";
@@ -310,7 +313,7 @@ $return .= '
 		 }
 	  }
 		
-	 var arr_fields_value = '.json_encode($_POST).';
+	 var arr_fields_value = '.json_encode($_POST, JSON_THROW_ON_ERROR).';
 	 var arr_form_elements = document.querySelector("#m_smtp_c_form_'.$my_msc_dir.'").childNodes.length;
 	 var arr_inputs = document.querySelectorAll("#m_smtp_c_'.$my_msc_dir.' input");
 	 var arr_textareas = document.querySelectorAll("#m_smtp_c_'.$my_msc_dir.' textarea");
@@ -387,7 +390,7 @@ if ($m_smtp_c_alternative_fields == 'on') {
 	$m_smtp_c_arr_fields_Name[$i];
 	}
 	$return .=
-	htmlspecialchars_decode($m_smtp_c_arr_fields_Code[$i]).'
+	htmlspecialchars_decode((string) $m_smtp_c_arr_fields_Code[$i]).'
 	</p>';	
 	}
    }
@@ -399,10 +402,10 @@ if ($m_smtp_c_alternative_fields == 'on') {
 	m_smtp_c_setTagAttributes("#m_smtp_c_'.$my_msc_dir.' .m_smtp_c_qty_field textarea", "id", "m_smtp_c_qty_textarea_'.$my_msc_dir.'_", true);
 	m_smtp_c_setTagAttributes("#m_smtp_c_'.$my_msc_dir.' .m_smtp_c_qty_field select", "id", "m_smtp_c_qty_select_'.$my_msc_dir.'_", true);
 	
-	var arr_tags_Name = '.json_encode($m_smtp_c_arr_tags_Name).';
-	var arr_fields_Required = '.json_encode($m_smtp_c_arr_fields_Required).';
-	var arr_fields_Type = '.json_encode($m_smtp_c_arr_fields_Type).';
-	var arr_fields_Maxlength = '.json_encode($m_smtp_c_arr_fields_Maxlength).';
+	var arr_tags_Name = '.json_encode($m_smtp_c_arr_tags_Name, JSON_THROW_ON_ERROR).';
+	var arr_fields_Required = '.json_encode($m_smtp_c_arr_fields_Required, JSON_THROW_ON_ERROR).';
+	var arr_fields_Type = '.json_encode($m_smtp_c_arr_fields_Type, JSON_THROW_ON_ERROR).';
+	var arr_fields_Maxlength = '.json_encode($m_smtp_c_arr_fields_Maxlength, JSON_THROW_ON_ERROR).';
 	var client_server = "'.$m_smtp_c_client_server.'";
 	for (var i = 0; i < '.$m_smtp_c_qty_fields.'; i++)
 	 {
@@ -473,18 +476,11 @@ $return .= '
 </p>';
 }
 
-// Captcha
-if ($m_smtp_c_digital_captcha == 'on') {
+
 $return .= '
-<p id="m_smtp_c_std_field_captcha" class="m_smtp_c_std_field">
-<a href="#" onclick="document.getElementById(\'my_captcha_'.$my_msc_dir.'\').src = \''.$SITEURL.'plugins/'.$m_smtp_c_thisfile.'/captcha.php?my_msc_dir='.$my_msc_dir.'&rand=\' + Math.random(); document.getElementById(\'my_captcha_code_input_'.$my_msc_dir.'\').value = \'\'; return false;">
-<img id="my_captcha_'.$my_msc_dir.'" src="'.$SITEURL.'plugins/'.$m_smtp_c_thisfile.'/captcha.php?my_msc_dir='.$my_msc_dir.'&rand='.m_smtp_c_Rand(0, 9999).'" alt="captcha"></a>
-<br>
-'.$m_smtp_c_Captcha.'
-<br>
-<input id="my_captcha_code_input_'.$my_msc_dir.'" class="my_captcha_code_input" type="text" name="m_smtp_c_captcha_name_'.$my_msc_dir.'" value="" size="6" maxlength="5" onkeyup="this.value = this.value.replace(/[^\d]+/g, \'\');" pattern="\d{5}" '.($m_smtp_c_client_server == 'client_server' ? 'required' : '').'>
-</p>';
-}
+<div class="g-recaptcha" data-sitekey="'.$m_smtp_c_domainkeygoogle.'"></div>
+';
+
 
 // Checkbox
 if ($m_smtp_c_agree_checkbox == 'on') {
@@ -509,6 +505,7 @@ $return .= '
 </p>
 
 </form>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 </div>';
 
@@ -523,13 +520,13 @@ $return .= '
 		// Alternative fields
 		if ($m_smtp_c_alternative_fields == 'on') {
 			
-		 $m_smtp_c_arr_fields_value = array(); 
+		 $m_smtp_c_arr_fields_value = []; 
 		 		 	 	 
 		 for ($i = 0; $i < $m_smtp_c_qty_fields; $i++) {
 			 
 		 if (array_key_exists($i, $m_smtp_c_arr_fields_Name)) 
          {
-		  $m_smtp_c_arr_fields_value[$i] = htmlspecialchars(@$_POST['alt_field_'.$i]);
+		  $m_smtp_c_arr_fields_value[$i] = htmlspecialchars((string) @$_POST['alt_field_'.$i]);
 		  //$return .= "$i - $m_smtp_c_arr_fields_Name[$i] - $m_smtp_c_arr_fields_value[$i] <br>";
 		  
 		  // maxlength
@@ -594,9 +591,9 @@ $return .= '
 		
 		// Fields
 		else {
-     	 $m_smtp_c_name_value = htmlspecialchars($_POST['m_smtp_c_name_value']);
-         $m_smtp_c_email_value = htmlspecialchars($_POST['m_smtp_c_email_value']);
-         $m_smtp_c_message_value = htmlspecialchars($_POST['m_smtp_c_message_value']);
+     	 $m_smtp_c_name_value = htmlspecialchars((string) $_POST['m_smtp_c_name_value']);
+         $m_smtp_c_email_value = htmlspecialchars((string) $_POST['m_smtp_c_email_value']);
+         $m_smtp_c_message_value = htmlspecialchars((string) $_POST['m_smtp_c_message_value']);
 		 
 		 if ( m_smtp_c_StrLen($m_smtp_c_name_value) > 200 || m_smtp_c_StrLen($m_smtp_c_email_value) > 200 || m_smtp_c_StrLen($m_smtp_c_message_value) > 5000 ) {
 		    $m_smtp_c_success_msg .= '<p class="m_smtp_c_field_error">'.$m_smtp_c_Maxlength_error.'<br></p>';
@@ -614,13 +611,7 @@ $return .= '
 		}
 
 		// For all fields
-		// captcha
-		if ($m_smtp_c_digital_captcha == 'on') { 
-		 if (md5($_POST['m_smtp_c_captcha_name_'.$my_msc_dir.''] . $m_smtp_c_digitSalt) != $_COOKIE['MSC_digit_'.$my_msc_dir.'']) {
-            $m_smtp_c_success_msg .= '<p class="m_smtp_c_field_error">'.$m_smtp_c_Captcha_error.'<br></p>';
-            $error = 1;  		
-         }
-		}
+
 		
 		// simple spam protect
 		if ($_POST['m_smtp_c_sender_e-mail'] != '') { 
@@ -628,14 +619,36 @@ $return .= '
             $error = 1;
 		}
 		
+
+		$recaptchaSecretKey = $m_smtp_c_secretkeygoogle;
+		  // Verify reCAPTCHA
+		  if (isset($_POST['g-recaptcha-response'])) {
+			$recaptchaResponse = $_POST['g-recaptcha-response'];
+			$recaptchaUrl = "https://www.google.com/recaptcha/api/siteverify?secret={$recaptchaSecretKey}&response={$recaptchaResponse}";
+			$recaptchaData = json_decode(file_get_contents($recaptchaUrl));
+	
+			if (!$recaptchaData->success){
+				$m_smtp_c_success_msg .= '<p class="m_smtp_c_field_error">'.$m_smtp_c_StopSpam_error.'<br></p>';
+				$error =1;
+			  
+			}else{
+				$error = 0;
+			}
+		} else {
+			$m_smtp_c_success_msg .= '<p class="m_smtp_c_field_error">'.$m_smtp_c_StopSpam_error.'<br></p>';
+			$error = 1;
+	   
+		};
+
         // If no erors
         if ($error != 1) {
+  
 			
 			$m_smtp_c_success_msg = '<p class="m_smtp_c_field_success">'.$m_smtp_c_Success.'<br></p>';
 			
-			$site = htmlspecialchars($_SERVER['HTTP_HOST']);
-			$ip = htmlspecialchars($_SERVER['REMOTE_ADDR']);
-			$useragent = htmlspecialchars($_SERVER['HTTP_USER_AGENT']);
+			$site = htmlspecialchars((string) $_SERVER['HTTP_HOST']);
+			$ip = htmlspecialchars((string) $_SERVER['REMOTE_ADDR']);
+			$useragent = htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']);
 			$footer = '
 				<hr>
 				<p>
@@ -690,10 +703,10 @@ $return .= '
 				require(GSROOTPATH.'plugins/'.$m_smtp_c_thisfile.'/SendMailSmtpClass.php');
 				$mail = new SendMailSmtpClass($m_smtp_c_email_from, $m_smtp_c_email_from_password, $m_smtp_c_email_from_ssl, $m_smtp_c_email_from_port, "UTF-8");
 				if ($m_smtp_c_on_off_substituting_email == 'checked') {
-				$from = array($m_smtp_c_sender_name, $m_smtp_c_email_from_fake_for_smtp);
+				$from = [$m_smtp_c_sender_name, $m_smtp_c_email_from_fake_for_smtp];
 				}
 				else {
-				$from = array($m_smtp_c_sender_name, $m_smtp_c_email_from);
+				$from = [$m_smtp_c_sender_name, $m_smtp_c_email_from];
 				}
 				
 				goto SEND;
@@ -712,7 +725,7 @@ $return .= '
 			    if ($m_smtp_c_alternative_fields == 'on') { 
 			    // Adding files to the letter and send
 				if (in_array('file', $m_smtp_c_arr_fields_Type)) {
-				for ($i = 0, $count_m_smtp_c_S_FILES = count($m_smtp_c_S_FILES); $i < $count_m_smtp_c_S_FILES; $i++) :
+				for ($i = 0, $count_m_smtp_c_S_FILES = is_countable($m_smtp_c_S_FILES) ? count($m_smtp_c_S_FILES) : 0; $i < $count_m_smtp_c_S_FILES; $i++) :
 				 if ($m_smtp_c_S_FILES[$i]['tmp_name'] != '') { 
 				  $m_smtp_c_file_format = m_smtp_c_GetFileFormat($m_smtp_c_S_FILES[$i]['name']);
 				  //$uploadfile = tempnam(sys_get_temp_dir(), sha1($m_smtp_c_S_FILES[$i]['name']));  																	 			 // +
@@ -722,7 +735,7 @@ $return .= '
 				   if ( file_exists($uploadfile) ) { unlink($uploadfile); } 															 								 			 // -
 			      } 
 				  else { 
-				   $m_smtp_c_success_msg .= '<p class="m_smtp_c_field_error">'.$m_smtp_c_Move_error.' '.htmlspecialchars($m_smtp_c_S_FILES[$i]['name']).'<br></p>';
+				   $m_smtp_c_success_msg .= '<p class="m_smtp_c_field_error">'.$m_smtp_c_Move_error.' '.htmlspecialchars((string) $m_smtp_c_S_FILES[$i]['name']).'<br></p>';
 				  }
 				 }
 				endfor;
@@ -737,7 +750,7 @@ $return .= '
 				$mail->send();
 				}
 			
-			$_POST = array(); //$_FILES = array();
+			$_POST = []; //$_FILES = array();
             $m_smtp_c_email_value = $m_smtp_c_name_value = $m_smtp_c_message_value = '';
         }
 		else {
@@ -761,13 +774,13 @@ return $return;
 
 // Search and replace
 function ShortCodeGetMSC($content) {
- preg_match_all("|\[\#(.*)\#\]|U", $content, $matches);
+ preg_match_all("|\[\#(.*)\#\]|U", (string) $content, $matches);
  //print_r($matches);
- for($i = 0, $count = count($matches[1]); $i < $count; $i++) {
-  $arr_tmp = explode(':', $matches[1][$i]);
+ for($i = 0, $count = is_countable($matches[1]) ? count($matches[1]) : 0; $i < $count; $i++) {
+  $arr_tmp = explode(':', (string) $matches[1][$i]);
   $my_msc_dir = $arr_tmp[1]; 
   if ($matches[1][$i] == "GetMSC:$my_msc_dir") {
-	 $content = str_ireplace("[#GetMSC:$my_msc_dir#]", GetMSC($my_msc_dir), $content);
+	 $content = str_ireplace("[#GetMSC:$my_msc_dir#]", (string) GetMSC($my_msc_dir), (string) $content);
   }
  }
 

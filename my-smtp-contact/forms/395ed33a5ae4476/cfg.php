@@ -1,16 +1,16 @@
 <?php
-$m_smtp_c_alternative_fields="on";
+$m_smtp_c_alternative_fields="off";
 $m_smtp_c_qty_fields="20";
 $m_smtp_c_limit_file_size="1048576";
 $m_smtp_c_valid_file_format=array("jpeg","jpg","gif","png","txt","doc","zip");
 $m_smtp_c_arr_fields_Name[0]="User name";$m_smtp_c_arr_tags_Name[0]="0";$m_smtp_c_arr_fields_Name_ok[0]="ok";$m_smtp_c_arr_fields_Required[0]="required";$m_smtp_c_arr_fields_Type[0]="text";$m_smtp_c_arr_fields_Maxlength[0]="50";$m_smtp_c_arr_fields_Code[0]="&lt;br&gt;
-&lt;input size=&quot;26&quot;&gt;";$m_smtp_c_arr_fields_Name[1]="Select a file 1 ";$m_smtp_c_arr_tags_Name[1]="1";$m_smtp_c_arr_fields_Name_ok[1]="ok";$m_smtp_c_arr_fields_Required[1]="---";$m_smtp_c_arr_fields_Type[1]="tel";$m_smtp_c_arr_fields_Maxlength[1]="---";$m_smtp_c_arr_fields_Code[1]="&lt;input&gt;";$m_smtp_c_arr_fields_Name[2]="Who is this? (checkbox like radio)";$m_smtp_c_arr_tags_Name[2]="2";$m_smtp_c_arr_fields_Name_ok[2]="ok";$m_smtp_c_arr_fields_Required[2]="required";$m_smtp_c_arr_fields_Type[2]="email";$m_smtp_c_arr_fields_Maxlength[2]="---";$m_smtp_c_arr_fields_Code[2]="&lt;br&gt;
+&lt;input size=&quot;26&quot;&gt;";$m_smtp_c_arr_fields_Name[1]="Select a file 1 ";$m_smtp_c_arr_tags_Name[1]="1";$m_smtp_c_arr_fields_Name_ok[1]="ok";$m_smtp_c_arr_fields_Required[1]="---";$m_smtp_c_arr_fields_Type[1]="file";$m_smtp_c_arr_fields_Maxlength[1]="---";$m_smtp_c_arr_fields_Code[1]="&lt;input&gt;";$m_smtp_c_arr_fields_Name[2]="Who is this? (checkbox like radio)";$m_smtp_c_arr_tags_Name[2]="2";$m_smtp_c_arr_fields_Name_ok[2]="ok";$m_smtp_c_arr_fields_Required[2]="---";$m_smtp_c_arr_fields_Type[2]="checkbox";$m_smtp_c_arr_fields_Maxlength[2]="---";$m_smtp_c_arr_fields_Code[2]="&lt;br&gt;
 &lt;input value=&quot;Men&quot;&gt;
 &lt;label&gt;Men&lt;/label&gt;
 &lt;input value=&quot;Woomen&quot;&gt;
 &lt;label&gt;Woomen&lt;/label&gt;
 &lt;input value=&quot;Child&quot;&gt;
-&lt;label&gt;Child&lt;/label&gt;";$m_smtp_c_arr_fields_Name[3]="Choose a color";$m_smtp_c_arr_tags_Name[3]="3";$m_smtp_c_arr_fields_Name_ok[3]="ok";$m_smtp_c_arr_fields_Required[3]="required";$m_smtp_c_arr_fields_Type[3]="---";$m_smtp_c_arr_fields_Maxlength[3]="---";$m_smtp_c_arr_fields_Code[3]="&lt;br&gt;
+&lt;label&gt;Child&lt;/label&gt;";$m_smtp_c_arr_fields_Name[3]="Choose a color";$m_smtp_c_arr_tags_Name[3]="3";$m_smtp_c_arr_fields_Name_ok[3]="ok";$m_smtp_c_arr_fields_Required[3]="---";$m_smtp_c_arr_fields_Type[3]="radio";$m_smtp_c_arr_fields_Maxlength[3]="---";$m_smtp_c_arr_fields_Code[3]="&lt;br&gt;
 &lt;input value=&quot;Red&quot;&gt;
 &lt;label&gt;Red&lt;/label&gt;
 &lt;br&gt;
@@ -18,7 +18,7 @@ $m_smtp_c_arr_fields_Name[0]="User name";$m_smtp_c_arr_tags_Name[0]="0";$m_smtp_
 &lt;label&gt;Green&lt;/label&gt;
 &lt;br&gt;
 &lt;input value=&quot;Blue&quot;&gt;
-&lt;label&gt;Blue&lt;/label&gt;";$m_smtp_c_arr_fields_Name[4]="Are you driving or flying?";$m_smtp_c_arr_tags_Name[4]="4";$m_smtp_c_arr_fields_Name_ok[4]="ok";$m_smtp_c_arr_fields_Required[4]="---";$m_smtp_c_arr_fields_Type[4]="file";$m_smtp_c_arr_fields_Maxlength[4]="---";$m_smtp_c_arr_fields_Code[4]="&lt;br&gt;
+&lt;label&gt;Blue&lt;/label&gt;";$m_smtp_c_arr_fields_Name[4]="Are you driving or flying?";$m_smtp_c_arr_tags_Name[4]="4";$m_smtp_c_arr_fields_Name_ok[4]="ok";$m_smtp_c_arr_fields_Required[4]="---";$m_smtp_c_arr_fields_Type[4]="---";$m_smtp_c_arr_fields_Maxlength[4]="---";$m_smtp_c_arr_fields_Code[4]="&lt;br&gt;
 &lt;select&gt;
 &lt;option value=&quot;I am Driving&quot;&gt;I am Driving
 &lt;option value=&quot;I am Flying&quot;&gt;I am Flying
@@ -27,7 +27,7 @@ $m_smtp_c_arr_fields_Name[0]="User name";$m_smtp_c_arr_tags_Name[0]="0";$m_smtp_
 &lt;br&gt;
 &lt;input value=&quot;Yes, bike&quot;&gt;
 &lt;label&gt;I have a bike&lt;/label&gt;";$m_smtp_c_arr_fields_Name[7]="I have a car";$m_smtp_c_arr_tags_Name[7]="7";$m_smtp_c_arr_fields_Name_ok[7]="---";$m_smtp_c_arr_fields_Required[7]="---";$m_smtp_c_arr_fields_Type[7]="checkbox";$m_smtp_c_arr_fields_Maxlength[7]="---";$m_smtp_c_arr_fields_Code[7]="&lt;input value=&quot;Yes, car&quot;&gt;
-&lt;label&gt;I have a car&lt;/label&gt;";$m_smtp_c_arr_fields_Name[8]="Button";$m_smtp_c_arr_tags_Name[8]="8";$m_smtp_c_arr_fields_Name_ok[8]="---";$m_smtp_c_arr_fields_Required[8]="---";$m_smtp_c_arr_fields_Type[8]="button";$m_smtp_c_arr_fields_Maxlength[8]="---";$m_smtp_c_arr_fields_Code[8]="&lt;input onclick=&quot;m_smtp_c_AlertPage(&#039;#m_smtp_c_qty_input_395ed33a5ae4476_10&#039;, &#039;&lt;p&gt;Hello World!&lt;/p&gt;&#039;)&quot; value=&quot;Click Me!&quot;&gt;";$m_smtp_c_arr_fields_Name[9]="Select your favorite color";$m_smtp_c_arr_tags_Name[9]="9";$m_smtp_c_arr_fields_Name_ok[9]="ok";$m_smtp_c_arr_fields_Required[9]="---";$m_smtp_c_arr_fields_Type[9]="color";$m_smtp_c_arr_fields_Maxlength[9]="---";$m_smtp_c_arr_fields_Code[9]="&lt;br&gt;
+&lt;label&gt;I have a car&lt;/label&gt;";$m_smtp_c_arr_fields_Name[8]="Button";$m_smtp_c_arr_tags_Name[8]="8";$m_smtp_c_arr_fields_Name_ok[8]="---";$m_smtp_c_arr_fields_Required[8]="---";$m_smtp_c_arr_fields_Type[8]="button";$m_smtp_c_arr_fields_Maxlength[8]="---";$m_smtp_c_arr_fields_Code[8]="&lt;input onclick=&quot;m_smtp_c_AlertPage('#m_smtp_c_qty_input_395ed33a5ae4476_10', '&lt;p&gt;Hello World!&lt;/p&gt;')&quot; value=&quot;Click Me!&quot;&gt;";$m_smtp_c_arr_fields_Name[9]="Select your favorite color";$m_smtp_c_arr_tags_Name[9]="9";$m_smtp_c_arr_fields_Name_ok[9]="ok";$m_smtp_c_arr_fields_Required[9]="---";$m_smtp_c_arr_fields_Type[9]="color";$m_smtp_c_arr_fields_Maxlength[9]="---";$m_smtp_c_arr_fields_Code[9]="&lt;br&gt;
 &lt;input&gt;";$m_smtp_c_arr_fields_Name[10]="Enter a date";$m_smtp_c_arr_tags_Name[10]="10";$m_smtp_c_arr_fields_Name_ok[10]="ok";$m_smtp_c_arr_fields_Required[10]="---";$m_smtp_c_arr_fields_Type[10]="date";$m_smtp_c_arr_fields_Maxlength[10]="---";$m_smtp_c_arr_fields_Code[10]="&lt;br&gt;
 &lt;input size=&quot;26&quot;&gt;";$m_smtp_c_arr_fields_Name[11]="Birthday (date and time)";$m_smtp_c_arr_tags_Name[11]="11";$m_smtp_c_arr_fields_Name_ok[11]="ok";$m_smtp_c_arr_fields_Required[11]="---";$m_smtp_c_arr_fields_Type[11]="datetime-local";$m_smtp_c_arr_fields_Maxlength[11]="---";$m_smtp_c_arr_fields_Code[11]="&lt;br&gt;
 &lt;input size=&quot;26&quot;&gt;";$m_smtp_c_arr_fields_Name[12]="E-mail";$m_smtp_c_arr_tags_Name[12]="12";$m_smtp_c_arr_fields_Name_ok[12]="ok";$m_smtp_c_arr_fields_Required[12]="required";$m_smtp_c_arr_fields_Type[12]="email";$m_smtp_c_arr_fields_Maxlength[12]="100";$m_smtp_c_arr_fields_Code[12]="&lt;br&gt;

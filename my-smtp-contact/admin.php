@@ -20,7 +20,7 @@ function my_smtp_c_rmRec($path) {
 // dirname with levels as in php7 for php5
 function m_smtp_c_Dirname($path, $levels = 1) 
  {
-	$arr = explode(DIRECTORY_SEPARATOR, dirname($path));
+	$arr = explode(DIRECTORY_SEPARATOR, dirname((string) $path));
 	array_splice($arr, count($arr) + 1 - $levels);
 	return implode(DIRECTORY_SEPARATOR, $arr);
  }
@@ -43,12 +43,12 @@ require($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.p
 }
 
 $my_smtp_c_forms_arr = file($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/ids-names.dat');
-$my_smtp_c_forms_ids = array();
-$my_smtp_c_forms_names = array();
+$my_smtp_c_forms_ids = [];
+$my_smtp_c_forms_names = [];
 
 if (!file_exists($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir)) { $my_smtp_c_selected_dir = 'no-forms'; $my_smtp_c_selected_name = $my_smtp_c_admin_no_аctive_form; $my_smtp_c_forms_arr[] = 'no-forms|'.$my_smtp_c_admin_no_аctive_form.''; }
 
-for ($i = 0, $mg_count_arr = count($my_smtp_c_forms_arr); $i < $mg_count_arr; $i++) {
+for ($i = 0, $mg_count_arr = is_countable($my_smtp_c_forms_arr) ? count($my_smtp_c_forms_arr) : 0; $i < $mg_count_arr; $i++) {
 	$my_smtp_c_forms_tmp = explode('|', $my_smtp_c_forms_arr[$i]);	 
 	$my_smtp_c_forms_ids[] = trim($my_smtp_c_forms_tmp[0]);
 	$my_smtp_c_forms_names[] = trim($my_smtp_c_forms_tmp[1]);
@@ -141,7 +141,7 @@ function m_smtp_c_alt_fields_Select($m_smtp_c_qty_fields, $themes_ch, $i, $theme
 
 			$tmp_themes_arr = '';
 			if (!array_key_exists($m_smtp_c_qty_fields, $themes_ch)) { $themes_ch[] = ''; }
-			for ( $l = 0, $count_themes_arr = count($themes_arr); $l < $count_themes_arr; $l++ )
+			for ( $l = 0, $count_themes_arr = is_countable($themes_arr) ? count($themes_arr) : 0; $l < $count_themes_arr; $l++ )
 			{ 
 			  if ($themes_arr[$l] == @$themes_ch[$i]) 
 			  { 
@@ -180,7 +180,7 @@ echo '
 		    <p>
 			<label>'.$m_smtp_c_admin_language_file.'</label>';
 			$m_smtp_c_array_languages = scandir($MSCDIR.'/'.$m_smtp_c_thisfile.'/lang/'); // scan the directory, get an array
-			for ( $i = 0; $i < count($m_smtp_c_array_languages); $i++ )
+			for ( $i = 0; $i < (is_countable($m_smtp_c_array_languages) ? count($m_smtp_c_array_languages) : 0); $i++ )
 			{
 			  if ($m_smtp_c_array_languages[$i] == $m_smtp_c_language.'.php') // if matches
 			  {
@@ -194,7 +194,7 @@ echo '
 		    <select class="text" name="m_smtp_c_language">';
             foreach ($m_smtp_c_array_languages as $key => $value) 
 			{
-			  if (strripos($m_smtp_c_array_languages[$key], '.php') !== false)
+			  if (strripos((string) $m_smtp_c_array_languages[$key], '.php') !== false)
 			  { 
                 echo '<option value="'.$m_smtp_c_array_languages[$key].'">'.$value.'</option>'; // output (the first element)
 			  }
@@ -208,14 +208,19 @@ echo '
 		    
 			m_smtp_c_Select($m_smtp_c_admin_standard_or_smtp, 'm_smtp_c_smtp_or_standard', $m_smtp_c_smtp_or_standard, 'standard', 'standard', $m_smtp_c_admin_standard, 'smtp', $m_smtp_c_admin_smtp);
 			
-			m_smtp_c_Select($m_smtp_c_admin_digital_captcha, 'm_smtp_c_digital_captcha', $m_smtp_c_digital_captcha, 'on', 'on', $m_smtp_c_admin_select_on, 'off', $m_smtp_c_admin_select_off);
 			
-			echo '		
-			<p>
-			<label>'.$m_smtp_c_admin_digitSalt.'</label>
-			<input class="text" name="m_smtp_c_digitSalt" id="m_smtp_c_digitSalt" type="text" value="'.$m_smtp_c_digitSalt.'">
-			<a href="javascript:void(0);" onclick="document.getElementById(\'m_smtp_c_digitSalt\').value = m_smtp_c_random(32)">'.$m_smtp_c_admin_digitSalt_generate.'</a>
-			</p>';
+			echo '
+			<h3>Google captcha</h3>
+			<label>Google captcha domain key</label>	
+			<input type="text" style="width:95%;padding:5px;" value="'.$m_smtp_c_domainkeygoogle.'" name="domainkeygoogle">
+			<br><br>
+			<label>Google captcha secret key</label>	
+			<input type="text" style="width:95%;padding:5px;" value="'.$m_smtp_c_secretkeygoogle.'" name="secretkeygoogle">
+			
+			<br><br>';
+			
+			;
+			
 
 			m_smtp_c_Select($m_smtp_c_admin_agree_checkbox, 'm_smtp_c_agree_checkbox', $m_smtp_c_agree_checkbox, 'on', 'on', $m_smtp_c_admin_select_on, 'off', $m_smtp_c_admin_select_off);			
 
@@ -368,15 +373,39 @@ echo '
 				  if ( empty($m_smtp_c_arr_tags_Name[$i]) ) { $m_smtp_c_arr_tags_Name[$i] = $i; }
 					echo ($i+1).' <input placeholder="'.$m_smtp_c_admin_designation.'" class="text" type="text" name="m_smtp_c_arr_fields_Name[]" value="'.@$m_smtp_c_arr_fields_Name[$i].'" style="max-width: 100px;">';
 			
-					$m_smtp_c_arr_fields_Name_ok = m_smtp_c_alt_fields_Select($m_smtp_c_qty_fields, $m_smtp_c_arr_fields_Name_ok, $i, 'm_smtp_c_arr_fields_Name_ok', $m_smtp_c_admin_yes_or_no_designation, array('ok', '---'));
+					$m_smtp_c_arr_fields_Name_ok = m_smtp_c_alt_fields_Select($m_smtp_c_qty_fields, $m_smtp_c_arr_fields_Name_ok, $i, 'm_smtp_c_arr_fields_Name_ok', $m_smtp_c_admin_yes_or_no_designation, ['ok', '---']);
 					
 					echo ' <input placeholder="tag \'name\'" class="text" type="hidden" name="m_smtp_c_arr_tags_Name[]" value="'.$m_smtp_c_arr_tags_Name[$i].'" style="max-width: 53px;" pattern="^\d+$">';
 					
-					$m_smtp_c_arr_fields_Required = m_smtp_c_alt_fields_Select($m_smtp_c_qty_fields, $m_smtp_c_arr_fields_Required, $i, 'm_smtp_c_arr_fields_Required', $m_smtp_c_admin_yes_or_no_required, array('---', 'required'));
+					$m_smtp_c_arr_fields_Required = m_smtp_c_alt_fields_Select($m_smtp_c_qty_fields, $m_smtp_c_arr_fields_Required, $i, 'm_smtp_c_arr_fields_Required', $m_smtp_c_admin_yes_or_no_required, ['---', 'required']);
 					
-					$m_smtp_c_arr_fields_Type = m_smtp_c_alt_fields_Select($m_smtp_c_qty_fields, $m_smtp_c_arr_fields_Type, $i, 'm_smtp_c_arr_fields_Type', $m_smtp_c_admin_field_type, array('---', 'button', 'checkbox', 'color', 'date', 'datetime-local', 'email', 'file', 'hidden', 'image', 'month', 'number', 'password', 'radio', 'range', /*'reset',*/ 'search', /*'submit',*/ 'tel', 'text', 'time', 'url', 'week'));
+					$m_smtp_c_arr_fields_Type = m_smtp_c_alt_fields_Select($m_smtp_c_qty_fields, $m_smtp_c_arr_fields_Type, $i, 'm_smtp_c_arr_fields_Type', $m_smtp_c_admin_field_type, [
+         '---',
+         'button',
+         'checkbox',
+         'color',
+         'date',
+         'datetime-local',
+         'email',
+         'file',
+         'hidden',
+         'image',
+         'month',
+         'number',
+         'password',
+         'radio',
+         'range',
+         /*'reset',*/
+         'search',
+         /*'submit',*/
+         'tel',
+         'text',
+         'time',
+         'url',
+         'week',
+     ]);
 					
-					$m_smtp_c_arr_fields_Maxlength = m_smtp_c_alt_fields_Select($m_smtp_c_qty_fields, $m_smtp_c_arr_fields_Maxlength, $i, 'm_smtp_c_arr_fields_Maxlength', $m_smtp_c_admin_Maxlength, array('---', '5', '10', '25', '50', '100', '200', '300', '500', '1000', '3000', '5000', '10000', '50000', '100000'));
+					$m_smtp_c_arr_fields_Maxlength = m_smtp_c_alt_fields_Select($m_smtp_c_qty_fields, $m_smtp_c_arr_fields_Maxlength, $i, 'm_smtp_c_arr_fields_Maxlength', $m_smtp_c_admin_Maxlength, ['---', '5', '10', '25', '50', '100', '200', '300', '500', '1000', '3000', '5000', '10000', '50000', '100000']);
 						
 					echo '
 					<textarea placeholder="'.$m_smtp_c_admin_Code.'" class="text short" type="text" name="m_smtp_c_arr_fields_Code[]" style="margin-top: 2px!important;">'.@$m_smtp_c_arr_fields_Code[$i].'</textarea>
@@ -416,21 +445,21 @@ $m_smtp_c_arr_fields_Type = $_POST['m_smtp_c_arr_fields_Type']; // array - email
 $m_smtp_c_arr_fields_Maxlength = $_POST['m_smtp_c_arr_fields_Maxlength']; // array - maxlength
 $m_smtp_c_arr_fields_Code = $_POST['m_smtp_c_arr_fields_Code']; // array - Codes
 file_put_contents( $MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '<?php
-$m_smtp_c_alternative_fields="'.htmlspecialchars($_POST['m_smtp_c_alternative_fields']).'";
+$m_smtp_c_alternative_fields="'.htmlspecialchars((string) $_POST['m_smtp_c_alternative_fields']).'";
 $m_smtp_c_qty_fields="'.intval($_POST['m_smtp_c_qty_fields']).'";
 $m_smtp_c_limit_file_size="'.(intval($_POST['m_smtp_c_limit_file_size']) * 1024 * 1024).'";
-$m_smtp_c_valid_file_format=array("'.str_replace(array(' ', ','), array('', '","'), mb_strtolower(htmlspecialchars(trim($_POST['m_smtp_c_valid_file_format'], ',')))).'");
+$m_smtp_c_valid_file_format=array("'.str_replace([' ', ','], ['', '","'], mb_strtolower(htmlspecialchars(trim((string) $_POST['m_smtp_c_valid_file_format'], ',')))).'");
 '); 
 	for ($i = 0; $i < $m_smtp_c_qty_fields; $i++) :
 	 if ($m_smtp_c_arr_fields_Name[$i] != '' && $m_smtp_c_arr_fields_Code[$i] != '') // if filled
 	 {
-	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Name['.$i.']="'.htmlspecialchars($m_smtp_c_arr_fields_Name[$i]).'";', FILE_APPEND);
+	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Name['.$i.']="'.htmlspecialchars((string) $m_smtp_c_arr_fields_Name[$i]).'";', FILE_APPEND);
 	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_tags_Name['.$i.']="'.intval($m_smtp_c_arr_tags_Name[$i]).'";', FILE_APPEND);	  
-	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Name_ok['.$i.']="'.htmlspecialchars($m_smtp_c_arr_fields_Name_ok[$i]).'";', FILE_APPEND);	  
-	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Required['.$i.']="'.htmlspecialchars($m_smtp_c_arr_fields_Required[$i]).'";', FILE_APPEND);
-	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Type['.$i.']="'.htmlspecialchars($m_smtp_c_arr_fields_Type[$i]).'";', FILE_APPEND);
-	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Maxlength['.$i.']="'.htmlspecialchars($m_smtp_c_arr_fields_Maxlength[$i]).'";', FILE_APPEND);
-	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Code['.$i.']="'.htmlspecialchars($m_smtp_c_arr_fields_Code[$i]).'";', FILE_APPEND);
+	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Name_ok['.$i.']="'.htmlspecialchars((string) $m_smtp_c_arr_fields_Name_ok[$i]).'";', FILE_APPEND);	  
+	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Required['.$i.']="'.htmlspecialchars((string) $m_smtp_c_arr_fields_Required[$i]).'";', FILE_APPEND);
+	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Type['.$i.']="'.htmlspecialchars((string) $m_smtp_c_arr_fields_Type[$i]).'";', FILE_APPEND);
+	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Maxlength['.$i.']="'.htmlspecialchars((string) $m_smtp_c_arr_fields_Maxlength[$i]).'";', FILE_APPEND);
+	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', '$m_smtp_c_arr_fields_Code['.$i.']="'.htmlspecialchars((string) $m_smtp_c_arr_fields_Code[$i]).'";', FILE_APPEND);
 	 }
 	endfor;
 file_put_contents( $MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_dir.'/cfg.php', 
@@ -439,27 +468,28 @@ file_put_contents( $MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_selected_
 
 file_put_contents( $MSCDIR.'/'.$m_smtp_c_thisfile.'/cfg.php', '<?php
 if (!function_exists("m_smtp_c_Rand")) { function m_smtp_c_Rand($begin, $end) { return function_exists("mt_rand") ? mt_rand($begin, $end) : rand($begin, $end); } } 
-$m_smtp_c_language="'.str_replace('.php', '', htmlspecialchars($_POST['m_smtp_c_language'])).'";
-$m_smtp_c_email_to="'.str_replace(' ', '', htmlspecialchars(trim($_POST['m_smtp_c_email_to'], ','))).'";
-$m_smtp_c_smtp_or_standard="'.htmlspecialchars($_POST['m_smtp_c_smtp_or_standard']).'";
-$m_smtp_c_sender_name="'.htmlspecialchars(trim($_POST['m_smtp_c_sender_name'])).'";
-$m_smtp_c_subject="'.htmlspecialchars(trim($_POST['m_smtp_c_subject'])).'";
-$m_smtp_c_email_from="'.htmlspecialchars(trim($_POST['m_smtp_c_email_from'])).'";
-$m_smtp_c_email_from_password="'.htmlspecialchars(trim($_POST['m_smtp_c_email_from_password'])).'";
-$m_smtp_c_email_from_ssl="'.htmlspecialchars(trim($_POST['m_smtp_c_email_from_ssl'])).'";
-$m_smtp_c_email_from_port="'.htmlspecialchars(trim($_POST['m_smtp_c_email_from_port'])).'";
-$m_smtp_c_standard_email_from="'.htmlspecialchars(trim($_POST['m_smtp_c_standard_email_from'])).'";
-$m_smtp_c_on_off_substituting_email="'.htmlspecialchars($_POST['m_smtp_c_on_off_substituting_email']).'";
-$m_smtp_c_window_msg="'.htmlspecialchars($_POST['m_smtp_c_window_msg']).'";
-$m_smtp_c_digital_captcha="'.htmlspecialchars($_POST['m_smtp_c_digital_captcha']).'";
-$m_smtp_c_digitSalt="'.htmlspecialchars(trim($_POST['m_smtp_c_digitSalt'])).'";
-$m_smtp_c_agree_checkbox="'.htmlspecialchars($_POST['m_smtp_c_agree_checkbox']).'";
-$m_smtp_c_client_server="'.htmlspecialchars($_POST['m_smtp_c_client_server']).'";
-$m_smtp_c_default_css="'.htmlspecialchars($_POST['m_smtp_c_default_css']).'";
+$m_smtp_c_language="'.str_replace('.php', '', htmlspecialchars((string) $_POST['m_smtp_c_language'])).'";
+$m_smtp_c_email_to="'.str_replace(' ', '', htmlspecialchars(trim((string) $_POST['m_smtp_c_email_to'], ','))).'";
+$m_smtp_c_smtp_or_standard="'.htmlspecialchars((string) $_POST['m_smtp_c_smtp_or_standard']).'";
+$m_smtp_c_sender_name="'.htmlspecialchars(trim((string) $_POST['m_smtp_c_sender_name'])).'";
+$m_smtp_c_subject="'.htmlspecialchars(trim((string) $_POST['m_smtp_c_subject'])).'";
+$m_smtp_c_email_from="'.htmlspecialchars(trim((string) $_POST['m_smtp_c_email_from'])).'";
+$m_smtp_c_email_from_password="'.htmlspecialchars(trim((string) $_POST['m_smtp_c_email_from_password'])).'";
+$m_smtp_c_email_from_ssl="'.htmlspecialchars(trim((string) $_POST['m_smtp_c_email_from_ssl'])).'";
+$m_smtp_c_email_from_port="'.htmlspecialchars(trim((string) $_POST['m_smtp_c_email_from_port'])).'";
+$m_smtp_c_standard_email_from="'.htmlspecialchars(trim((string) $_POST['m_smtp_c_standard_email_from'])).'";
+$m_smtp_c_on_off_substituting_email="'.htmlspecialchars((string) $_POST['m_smtp_c_on_off_substituting_email']).'";
+$m_smtp_c_window_msg="'.htmlspecialchars((string) $_POST['m_smtp_c_window_msg']).'";
+$m_smtp_c_secretkeygoogle="'.htmlspecialchars((string) $_POST['secretkeygoogle']).'";
+$m_smtp_c_domainkeygoogle="'.htmlspecialchars((string) $_POST['domainkeygoogle']).'";
+$m_smtp_c_digitSalt="'.htmlspecialchars(trim((string) $_POST['m_smtp_c_digitSalt'])).'";
+$m_smtp_c_agree_checkbox="'.htmlspecialchars((string) $_POST['m_smtp_c_agree_checkbox']).'";
+$m_smtp_c_client_server="'.htmlspecialchars((string) $_POST['m_smtp_c_client_server']).'";
+$m_smtp_c_default_css="'.htmlspecialchars((string) $_POST['m_smtp_c_default_css']).'";
 ?>');
 
-$my_smtp_c_selected_dir = htmlspecialchars($_POST['my_smtp_c_selected_dir']);
-$my_smtp_c_selected_name = htmlspecialchars($_POST['my_smtp_c_selected_name']);
+$my_smtp_c_selected_dir = htmlspecialchars((string) $_POST['my_smtp_c_selected_dir']);
+$my_smtp_c_selected_name = htmlspecialchars((string) $_POST['my_smtp_c_selected_name']);
 if ($my_smtp_c_selected_dir == 'no-forms') { $my_smtp_c_selected_name = ''; }
 file_put_contents( $MSCDIR.'/'.$m_smtp_c_thisfile.'/active_cfg.php', '<?php
 $my_smtp_c_selected_dir="'.$my_smtp_c_selected_dir.'";
@@ -482,8 +512,8 @@ setTimeout('window.location.href = \'load.php?id=<?php echo $m_smtp_c_thisfile; 
 }
 
 if ($act == 'my_smtp_c_New') {
-	$my_smtp_c_new_name = htmlspecialchars($_POST['my_smtp_c_new_name']);
-	$my_smtp_c_new_id = uniqid(rand(10, 99));
+	$my_smtp_c_new_name = htmlspecialchars((string) $_POST['my_smtp_c_new_name']);
+	$my_smtp_c_new_id = uniqid(random_int(10, 99));
 	if (mkdir($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_new_id)) {
 	 if (copy($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms_cfg.php', $MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/'.$my_smtp_c_new_id.'/cfg.php')) {
 	  file_put_contents($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/ids-names.dat', $my_smtp_c_new_id . '|' . $my_smtp_c_new_name . "\r\n", FILE_APPEND);
@@ -506,7 +536,7 @@ if ($act == 'my_smtp_c_Delete') {
 		
 		foreach ( $my_smtp_c_forms_arr as $key => $val ) 
 		 {
-			if ( strpos($val, $my_smtp_c_dir_and_name, 0) !== false ) // look for a match
+			if ( str_contains((string) $val, $my_smtp_c_dir_and_name) ) // look for a match
 			{   
 				$index = $key; 
 			}
@@ -542,16 +572,16 @@ setTimeout('window.location.href = \'load.php?id=<?php echo $m_smtp_c_thisfile; 
 
 if ($act == 'my_smtp_c_Rename') {
 	$arr_file = file($MSCDIR.'/'.$m_smtp_c_thisfile.'/forms/ids-names.dat');
-    $my_smtp_c_old_id = htmlspecialchars($_POST['my_smtp_c_old_id']);
-	$my_smtp_c_old_name = htmlspecialchars($_POST['my_smtp_c_old_name']);
-	$my_smtp_c_new_name = htmlspecialchars($_POST['my_smtp_c_new_name']);
+    $my_smtp_c_old_id = htmlspecialchars((string) $_POST['my_smtp_c_old_id']);
+	$my_smtp_c_old_name = htmlspecialchars((string) $_POST['my_smtp_c_old_name']);
+	$my_smtp_c_new_name = htmlspecialchars((string) $_POST['my_smtp_c_new_name']);
 	$my_smtp_c_dir_and_name = $my_smtp_c_old_id .'|'. $my_smtp_c_old_name; // dir|name
 	
 		$str = '';
 		foreach($arr_file as $key => $val)
 		 {
-		  if ($my_smtp_c_dir_and_name == trim($val)) {
-		   $val = str_replace($my_smtp_c_old_name, $my_smtp_c_new_name, $val);
+		  if ($my_smtp_c_dir_and_name == trim((string) $val)) {
+		   $val = str_replace($my_smtp_c_old_name, $my_smtp_c_new_name, (string) $val);
 		  }
 		  $str .= $val;
 		 }

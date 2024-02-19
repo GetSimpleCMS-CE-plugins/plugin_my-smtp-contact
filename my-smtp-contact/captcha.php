@@ -1,44 +1,42 @@
 <?php
+
 session_start();
 
-// Utwórz losową liczbę dla CAPTCHA
-$captcha_number = rand(1000, 9999);
+// Tworzenie losowego ciągu znaków dla captchy
+$captchaString = substr(md5(mt_rand()), 0, 5);
 
-// Zapisz wygenerowaną liczbę do sesji
-$_SESSION['captcha_number'] = $captcha_number;
+// Zapisywanie ciągu w sesji
+$_SESSION['captcha'] = $captchaString;
 
-// Ustaw szerokość i wysokość obrazu CAPTCHA
-$image_width = 200;
-$image_height = 50;
+// Tworzenie obrazka
+$image = imagecreatetruecolor(150, 50);
 
-// Utwórz obraz CAPTCHA
-$image = imagecreatetruecolor($image_width, $image_height);
+// Kolor tła
+$bgColor = imagecolorallocate($image, 255, 255, 255);
 
-// Ustaw kolor tła i kolor tekstu
-$background_color = imagecolorallocate($image, 255, 255, 255);
-$text_color = imagecolorallocate($image, 0, 0, 0);
+// Kolor tekstu
+$textColor = imagecolorallocate($image, mt_rand(0, 100), mt_rand(0, 100), mt_rand(0, 100));
 
-// Wypełnij tło obrazu
-imagefilledrectangle($image, 0, 0, $image_width, $image_height, $background_color);
+// Wypełnienie tłem
+imagefill($image, 0, 0, $bgColor);
 
-// Dodaj losowe linie na obrazie CAPTCHA
-for ($i = 0; $i < 10; $i++) {
-    imageline($image, mt_rand(0, $image_width), mt_rand(0, $image_height), mt_rand(0, $image_width), mt_rand(0, $image_height), $text_color);
+// Dodanie szumów w tle
+for ($i = 0; $i < 30; $i++) {
+    $noiseColor = imagecolorallocate($image, mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255));
+    imagesetpixel($image, mt_rand(0, 150), mt_rand(0, 50), $noiseColor);
+    imageline($image, mt_rand(0, 150), mt_rand(0, 50), mt_rand(0, 150), mt_rand(0, 50), $noiseColor);
 }
 
-// Dodaj tekst CAPTCHA z większą czcionką
-$font_size = 30; // Rozmiar czcionki
-$x = 50; // Pozycja x
-$y = 40; // Pozycja y
-$font_path = __DIR__ . '/font1.ttf'; // Ścieżka do pliku czcionki
-imagettftext($image, $font_size, 0, $x, $y, $text_color, $font_path, $captcha_number);
+// Dodanie tekstu na obrazek
+imagestring($image, 30, 60, 15, $captchaString, $textColor);
 
-// Ustaw nagłówek Content-Type
-header('Content-type: image/png');
+// Ustawienie nagłówka
+header('Content-Type: image/png');
 
-// Wyświetl obraz CAPTCHA
+// Wyświetlenie obrazka
 imagepng($image);
 
-// Zwolnij zasoby obrazu
+// Zwolnienie zasobów
 imagedestroy($image);
+
 ?>

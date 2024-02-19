@@ -38,7 +38,7 @@ class SendMailClass
 	/**
 	 An array of file titles.
 	 */
-	private $_files = array();
+	private array $_files = [];
 	
 	/**
 	 Manage the dumping.
@@ -53,21 +53,7 @@ class SendMailClass
 	/**
 	 CSS styles for email tarts.
 	 */
-	private $_styles = array(
-		'body'  => 'margin: 0 0 0 0; padding: 10px 10px 10px 10px; background: #ffffff; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'a'     => 'color: #003399; text-decoration: underline; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'p'     => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'ul'    => 'margin: 0 0 20px 20px; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'ol'    => 'margin: 0 0 20px 20px; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'table' => 'margin: 0 0 20px 0; border: 1px solid #dddddd; border-collapse: collapse;',
-		'th'    => 'padding: 10px; border: 1px solid #dddddd; vertical-align: middle; background-color: #eeeeee; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;',
-		'td'    => 'padding: 10px; border: 1px solid #dddddd; vertical-align: middle; background-color: #ffffff; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'h1'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 22px; font-family: Arial, Helvetica, sans-serif; line-height: 26px; font-weight: bold;', 
-		'h2'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 20px; font-family: Arial, Helvetica, sans-serif; line-height: 24px; font-weight: bold;', 
-		'h3'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 18px; font-family: Arial, Helvetica, sans-serif; line-height: 22px; font-weight: bold;', 
-		'h4'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 16px; font-family: Arial, Helvetica, sans-serif; line-height: 20px; font-weight: bold;', 
-		'hr'    => 'height: 1px; border: none; color: #dddddd; background: #dddddd; margin: 0 0 20px 0;'
-	); 
+	private array $_styles = ['body'  => 'margin: 0 0 0 0; padding: 10px 10px 10px 10px; background: #ffffff; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'a'     => 'color: #003399; text-decoration: underline; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'p'     => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'ul'    => 'margin: 0 0 20px 20px; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'ol'    => 'margin: 0 0 20px 20px; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'table' => 'margin: 0 0 20px 0; border: 1px solid #dddddd; border-collapse: collapse;', 'th'    => 'padding: 10px; border: 1px solid #dddddd; vertical-align: middle; background-color: #eeeeee; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'td'    => 'padding: 10px; border: 1px solid #dddddd; vertical-align: middle; background-color: #ffffff; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'h1'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 22px; font-family: Arial, Helvetica, sans-serif; line-height: 26px; font-weight: bold;', 'h2'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 20px; font-family: Arial, Helvetica, sans-serif; line-height: 24px; font-weight: bold;', 'h3'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 18px; font-family: Arial, Helvetica, sans-serif; line-height: 22px; font-weight: bold;', 'h4'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 16px; font-family: Arial, Helvetica, sans-serif; line-height: 20px; font-weight: bold;', 'hr'    => 'height: 1px; border: none; color: #dddddd; background: #dddddd; margin: 0 0 20px 0;']; 
 	
 	/**
 	 Checking the existence of the file.
@@ -76,12 +62,12 @@ class SendMailClass
 	 */
 	private function safeFile($filename)
 	{
-		$dir = dirname($filename);
+		$dir = dirname((string) $filename);
 		if (!is_dir($dir)) {
 			mkdir($dir, 0777, true);
 		}
 		
-		$info   = pathinfo($filename);
+		$info   = pathinfo((string) $filename);
 		$name   = $dir . '/' . $info['filename']; 
 		$ext    = (empty($info['extension'])) ? '' : '.' . $info['extension'];
 		$prefix = '';
@@ -122,17 +108,11 @@ class SendMailClass
 	public function addFile($filename, $realname)
 	{
 		if (is_file($filename)) {
-			$name = basename($filename);
+			$name = basename((string) $filename);
 			$fp   = fopen($filename, 'rb');  
 			$file = fread($fp, filesize($filename));   
 			fclose($fp);
-			$this->_files[] = array( 
-				'Content-Type: application/octet-stream; name="' . $name . '"',   
-				'Content-Transfer-Encoding: base64',  
-				'Content-Disposition: attachment; filename="' . $realname . '"',   
-				'',
-				chunk_split(base64_encode($file)),
-			);
+			$this->_files[] = ['Content-Type: application/octet-stream; name="' . $name . '"', 'Content-Transfer-Encoding: base64', 'Content-Disposition: attachment; filename="' . $realname . '"', '', chunk_split(base64_encode($file))];
 		}
 	}
 	
@@ -142,9 +122,9 @@ class SendMailClass
 	public function addHtmlStyle($html)
 	{
 		foreach ($this->_styles as $tag => $style) {
-			preg_match_all('/<' . $tag . '([\s].*?)?>/i', $html, $matchs, PREG_SET_ORDER); 
+			preg_match_all('/<' . $tag . '([\s].*?)?>/i', (string) $html, $matchs, PREG_SET_ORDER); 
 			foreach ($matchs as $match) {
-				$attrs = array();
+				$attrs = [];
 				if (!empty($match[1])) {
 					preg_match_all('/[ ]?(.*?)=[\"|\'](.*?)[\"|\'][ ]?/', $match[1], $chanks);
 					if (!empty($chanks[1]) && !empty($chanks[2])) {
@@ -155,15 +135,15 @@ class SendMailClass
 				if (empty($attrs['style'])) {
 					$attrs['style'] = $style;
 				} else {
-					$attrs['style'] = rtrim($attrs['style'], '; ') . '; ' . $style;
+					$attrs['style'] = rtrim((string) $attrs['style'], '; ') . '; ' . $style;
 				}
 				
-				$compile = array();
+				$compile = [];
 				foreach ($attrs as $name => $value) {
 					$compile[] = $name . '="' . $value . '"';
 				}
 				
-				$html = str_replace($match[0], '<' . $tag . ' ' . implode(' ', $compile) . '>', $html);
+				$html = str_replace($match[0], '<' . $tag . ' ' . implode(' ', $compile) . '>', (string) $html);
 			}
 		}
 		
@@ -180,14 +160,14 @@ class SendMailClass
 		}
 		
 		// From whom.
-		$from = (empty($this->fromName)) ? $this->fromEmail : '=?UTF-8?B?' . base64_encode($this->fromName) . '?= <' . $this->fromEmail . '>';
+		$from = (empty($this->fromName)) ? $this->fromEmail : '=?UTF-8?B?' . base64_encode((string) $this->fromName) . '?= <' . $this->fromEmail . '>';
 		
 		// To.
-		$array_to = array();
-		foreach (explode(',', $this->toEmail) as $row) {
+		$array_to = [];
+		foreach (explode(',', (string) $this->toEmail) as $row) {
 			$row = trim($row);
 			if (!empty($row)) {
-				$array_to[] = (empty($this->toName)) ? $row : '=?UTF-8?B?' . base64_encode($this->toName) . '?= <' . $row . '>';
+				$array_to[] = (empty($this->toName)) ? $row : '=?UTF-8?B?' . base64_encode((string) $this->toName) . '?= <' . $row . '>';
 			}
 		}
 		
@@ -212,45 +192,33 @@ class SendMailClass
 		$boundary = md5(uniqid(time()));
 		
 		// The title of the letter.
-		$headers = array(
-			'Content-Type: multipart/mixed; boundary="' . $boundary . '"',
-			'Content-Transfer-Encoding: 7bit',
-			'MIME-Version: 1.0',
-			'From: ' . $from,
-			'Date: ' . date('r')
-		);
+		$headers = ['Content-Type: multipart/mixed; boundary="' . $boundary . '"', 'Content-Transfer-Encoding: 7bit', 'MIME-Version: 1.0', 'From: ' . $from, 'Date: ' . date('r')];
 		
 		// The body of the letter.
-		$message = array(
-			'--' . $boundary,
-			'Content-Type: text/html; charset=UTF-8',
-			'Content-Transfer-Encoding: base64',
-			'',
-			chunk_split(base64_encode($body))
-		);
+		$message = ['--' . $boundary, 'Content-Type: text/html; charset=UTF-8', 'Content-Transfer-Encoding: base64', '', chunk_split(base64_encode((string) $body))];
 		
 		if (!empty($this->_files)) {
 			foreach ($this->_files as $row) {
-				$message = array_merge($message, array('', '--' . $boundary), $row);
+				$message = array_merge($message, ['', '--' . $boundary], $row);
 			}
 		}
 		
 		$message[] = '';
 		$message[] = '--' . $boundary . '--';
-		$res = array();
+		$res = [];
 		
 		foreach ($array_to as $to) {
 			// Dump the letter to the file.
 			if ($this->dump == true) {
 				if (empty($this->dumpPath)) {
-					$this->dumpPath = dirname(__FILE__) . '/sendmail';
+					$this->dumpPath = __DIR__ . '/sendmail';
 				}
 				
-				$dump = array_merge($headers, array('To: ' . $to, 'Subject: ' . $subject, ''), $message);
+				$dump = array_merge($headers, ['To: ' . $to, 'Subject: ' . $subject, ''], $message);
 				$file = $this->safeFile($this->dumpPath . '/' . date('Y-m-d_H-i-s') . '.eml');
 				file_put_contents($file, implode("\r\n", $dump));
 			}
-			$res[] = function_exists('mb_send_mail') ? mb_send_mail($to, $subject, implode("\r\n", $message), implode("\r\n", $headers)) : mail($to, $subject, implode("\r\n", $message), implode("\r\n", $headers));
+			$res[] = function_exists('mb_send_mail') ? mb_send_mail($to, (string) $subject, implode("\r\n", $message), implode("\r\n", $headers)) : mail($to, (string) $subject, implode("\r\n", $message), implode("\r\n", $headers));
 		}
 		
 		return $res;

@@ -24,22 +24,7 @@ if(!defined('IN_GS')){ die('you cannot load this page directly.'); }
 */
 class SendMailSmtpClass {
 
-    /**
-    *
-    * @var string $smtp_username - login
-    * @var string $smtp_password - password
-    * @var string $smtp_host - host
-    * @var string $smtp_from - from whom
-    * @var integer $smtp_port - port
-    * @var string $smtp_charset - encoding
-    *
-    */   
-    public $smtp_username;
-    public $smtp_password;
-    public $smtp_host;
     public $smtp_from;
-    public $smtp_port;
-    public $smtp_charset;
 	public $boundary;
     public $addFile = false;
     public $multipart;
@@ -47,21 +32,7 @@ class SendMailSmtpClass {
 	/**
 	 CSS styles for email tarts.
 	 */
-	private $_styles = array(
-		'body'  => 'margin: 0 0 0 0; padding: 10px 10px 10px 10px; background: #ffffff; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'a'     => 'color: #003399; text-decoration: underline; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'p'     => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'ul'    => 'margin: 0 0 20px 20px; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'ol'    => 'margin: 0 0 20px 20px; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'table' => 'margin: 0 0 20px 0; border: 1px solid #dddddd; border-collapse: collapse;',
-		'th'    => 'padding: 10px; border: 1px solid #dddddd; vertical-align: middle; background-color: #eeeeee; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;',
-		'td'    => 'padding: 10px; border: 1px solid #dddddd; vertical-align: middle; background-color: #ffffff; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 
-		'h1'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 22px; font-family: Arial, Helvetica, sans-serif; line-height: 26px; font-weight: bold;', 
-		'h2'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 20px; font-family: Arial, Helvetica, sans-serif; line-height: 24px; font-weight: bold;', 
-		'h3'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 18px; font-family: Arial, Helvetica, sans-serif; line-height: 22px; font-weight: bold;', 
-		'h4'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 16px; font-family: Arial, Helvetica, sans-serif; line-height: 20px; font-weight: bold;', 
-		'hr'    => 'height: 1px; border: none; color: #dddddd; background: #dddddd; margin: 0 0 20px 0;'
-	);
+	private array $_styles = ['body'  => 'margin: 0 0 0 0; padding: 10px 10px 10px 10px; background: #ffffff; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'a'     => 'color: #003399; text-decoration: underline; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'p'     => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'ul'    => 'margin: 0 0 20px 20px; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'ol'    => 'margin: 0 0 20px 20px; padding: 0 0 0 0; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'table' => 'margin: 0 0 20px 0; border: 1px solid #dddddd; border-collapse: collapse;', 'th'    => 'padding: 10px; border: 1px solid #dddddd; vertical-align: middle; background-color: #eeeeee; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'td'    => 'padding: 10px; border: 1px solid #dddddd; vertical-align: middle; background-color: #ffffff; color: #000000; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 18px;', 'h1'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 22px; font-family: Arial, Helvetica, sans-serif; line-height: 26px; font-weight: bold;', 'h2'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 20px; font-family: Arial, Helvetica, sans-serif; line-height: 24px; font-weight: bold;', 'h3'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 18px; font-family: Arial, Helvetica, sans-serif; line-height: 22px; font-weight: bold;', 'h4'    => 'margin: 0 0 20px 0; padding: 0 0 0 0; color: #000000; font-size: 16px; font-family: Arial, Helvetica, sans-serif; line-height: 20px; font-weight: bold;', 'hr'    => 'height: 1px; border: none; color: #dddddd; background: #dddddd; margin: 0 0 20px 0;'];
 
 	/**
 	 * Adding styles to the tags.
@@ -69,9 +40,9 @@ class SendMailSmtpClass {
 	public function addHtmlStyle($html)
 	{
 		foreach ($this->_styles as $tag => $style) {
-			preg_match_all('/<' . $tag . '([\s].*?)?>/i', $html, $matchs, PREG_SET_ORDER); 
+			preg_match_all('/<' . $tag . '([\s].*?)?>/i', (string) $html, $matchs, PREG_SET_ORDER); 
 			foreach ($matchs as $match) {
-				$attrs = array();
+				$attrs = [];
 				if (!empty($match[1])) {
 					preg_match_all('/[ ]?(.*?)=[\"|\'](.*?)[\"|\'][ ]?/', $match[1], $chanks);
 					if (!empty($chanks[1]) && !empty($chanks[2])) {
@@ -82,29 +53,33 @@ class SendMailSmtpClass {
 				if (empty($attrs['style'])) {
 					$attrs['style'] = $style;
 				} else {
-					$attrs['style'] = rtrim($attrs['style'], '; ') . '; ' . $style;
+					$attrs['style'] = rtrim((string) $attrs['style'], '; ') . '; ' . $style;
 				}
 				
-				$compile = array();
+				$compile = [];
 				foreach ($attrs as $name => $value) {
 					$compile[] = $name . '="' . $value . '"';
 				}
 				
-				$html = str_replace($match[0], '<' . $tag . ' ' . implode(' ', $compile) . '>', $html);
+				$html = str_replace($match[0], '<' . $tag . ' ' . implode(' ', $compile) . '>', (string) $html);
 			}
 		}
 		
 		return $html;
 	}
     
-    public function __construct($smtp_username, $smtp_password, $smtp_host, $smtp_port = 25, $smtp_charset = "utf-8") {
-        $this->smtp_username = $smtp_username;
-        $this->smtp_password = $smtp_password;
-        $this->smtp_host = $smtp_host;
-        $this->smtp_port = $smtp_port;
-        $this->smtp_charset = $smtp_charset;
-		
-		// file delimiter
+    public function __construct(/**
+        *
+        * @var string $smtp_username - login
+        * @var string $smtp_password - password
+        * @var string $smtp_host - host
+        * @var string $smtp_from - from whom
+        * @var integer $smtp_port - port
+        * @var string $smtp_charset - encoding
+        *
+        */
+    public $smtp_username, public $smtp_password, public $smtp_host, public $smtp_port = 25, public $smtp_charset = "utf-8") {
+        // file delimiter
 		$this->boundary = "--".md5(uniqid(time()));
 		$this->multipart = "";
     }
@@ -164,13 +139,13 @@ class SendMailSmtpClass {
                 throw new Exception('Autorization error');
             }
 			
-            fputs($socket, base64_encode($this->smtp_username) . "\r\n");
+            fputs($socket, base64_encode((string) $this->smtp_username) . "\r\n");
             if (!$this->_parseServer($socket, "334")) {
                 fclose($socket);
                 throw new Exception('Autorization error');
             }
             
-            fputs($socket, base64_encode($this->smtp_password) . "\r\n");
+            fputs($socket, base64_encode((string) $this->smtp_password) . "\r\n");
             if (!$this->_parseServer($socket, "235")) {
                 fclose($socket);
                 throw new Exception('Autorization error');
@@ -182,7 +157,7 @@ class SendMailSmtpClass {
                 throw new Exception('Error of command sending: MAIL FROM');
             }
             
-			$mailTo = str_replace(" ", "", $mailTo);
+			$mailTo = str_replace(" ", "", (string) $mailTo);
 			$emails_to_array = explode(',', $mailTo);
 			foreach($emails_to_array as $email) {
 				fputs($socket, "RCPT TO: <{$email}>\r\n");
@@ -221,7 +196,7 @@ class SendMailSmtpClass {
 		}		
 		$data = fread($file,  filesize( $path ) );
 		fclose($file);
-		$filename = basename($path);		
+		$filename = basename((string) $path);		
 		$multipart  =  "\r\n--{$this->boundary}\r\n";   
 		$multipart .= "Content-Type: application/octet-stream; name=\"$filename\"\r\n";   
 		$multipart .= "Content-Transfer-Encoding: base64\r\n";   
@@ -235,6 +210,7 @@ class SendMailSmtpClass {
     
 	// parsing server response
     private function _parseServer($socket, $response) {
+        $responseServer = null;
         while (@substr($responseServer, 3, 1) != ' ') {
             if (!($responseServer = fgets($socket, 256))) {
                 return false;
@@ -249,11 +225,11 @@ class SendMailSmtpClass {
 	// preparation of the contents of the letter
 	private function getContentMail($subject, $message, $smtp_from, $mailTo){	
 		// if the encoding is windows-1251, then re-encode the theme
-		if( strtolower($this->smtp_charset) == "windows-1251" ){
-			$subject = iconv('utf-8', 'windows-1251', $subject);
+		if( strtolower((string) $this->smtp_charset) == "windows-1251" ){
+			$subject = iconv('utf-8', 'windows-1251', (string) $subject);
 		}
         $contentMail = "Date: " . date("D, d M Y H:i:s") . " UT\r\n";
-        $contentMail .= 'Subject: =?' . $this->smtp_charset . '?B?'  . base64_encode($subject) . "=?=\r\n";
+        $contentMail .= 'Subject: =?' . $this->smtp_charset . '?B?'  . base64_encode((string) $subject) . "=?=\r\n";
 		
 		// letter header
 		$headers = "MIME-Version: 1.0\r\n";
@@ -274,7 +250,7 @@ class SendMailSmtpClass {
 			$multipart .= "Content-Type: text/html; charset=utf-8\r\n";   
 			$multipart .= "Content-Transfer-Encoding: base64\r\n";   
 			$multipart .= "\r\n";
-			$multipart .= chunk_split(base64_encode($message)); 
+			$multipart .= chunk_split(base64_encode((string) $message)); 
 			
 			// files
 			$multipart .= $this->multipart; 
@@ -286,7 +262,7 @@ class SendMailSmtpClass {
 		}
 		
 		// if the encoding is windows-1251, then we will re-encode the whole letter
-		if( strtolower($this->smtp_charset) == "windows-1251" ){
+		if( strtolower((string) $this->smtp_charset) == "windows-1251" ){
 			$contentMail = iconv('utf-8', 'windows-1251', $contentMail);
 		}	
 		
