@@ -210,7 +210,7 @@ echo '
 			
 			
 			echo '
-			<h3>Google captcha (required from https://www.google.com/recaptcha/admin/create)</h3>
+			<h3>Google captcha *required ( from <a href="https://www.google.com/recaptcha/admin/create">Google</a>)</h3>
 			<label>Google captcha domain key</label>	
 			<input type="text" style="width:95%;padding:5px;" value="'.$m_smtp_c_domainkeygoogle.'" name="domainkeygoogle">
 			<br><br>
